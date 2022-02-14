@@ -46,20 +46,7 @@ You will also need to have `sockets` extension installed and enabled (all execut
    $ composer require sunspikes/clamav-validator
    ```
 
-#### 2. Add the service provider (for Laravel 5.4 or below)
-
-This package supports Laravel new [Package Discovery](https://laravel.com/docs/5.5/packages#package-discovery).
-    
-If you are using Laravel < 5.5, you need to add `Sunspikes\ClamavValidator\ClamavValidatorServiceProvider::class` to your `providers` array in `config/app.php`:
-
-```php
-'providers' => [
-	// ...
-
-	Sunspikes\ClamavValidator\ClamavValidatorServiceProvider::class,
-],
-```
-#### 3. Publish assets from the the vendor package
+#### 2. Publish assets from the the vendor package
 
 ##### Config file
 

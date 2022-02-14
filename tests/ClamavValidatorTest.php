@@ -7,10 +7,11 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Facade;
 use Mockery;
 use Illuminate\Contracts\Translation\Translator;
+use PHPUnit\Framework\TestCase;
 use Sunspikes\ClamavValidator\ClamavValidator;
 use Sunspikes\ClamavValidator\ClamavValidatorException;
 
-class ClamavValidatorTest extends \PHPUnit_Framework_TestCase
+class ClamavValidatorTest extends TestCase
 {
     protected $translator;
     protected $clean_data;
@@ -21,11 +22,11 @@ class ClamavValidatorTest extends \PHPUnit_Framework_TestCase
     protected $multiple_files_all_clean;
     protected $multiple_files_some_with_virus;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->translator = Mockery::mock(Translator::class);
         $this->translator->shouldReceive('get')->with('validation.custom.file.clamav')->andReturn('error');
-        $this->translator->shouldReceive('get')->withAnyArgs()->andReturn(null);
+        $this->translator->shouldReceive('get')->withAnyArgs()->andReturn('');
         $this->translator->shouldReceive('get')->with('validation.attributes')->andReturn([]);
         $this->translator->shouldReceive('trans');
         $this->clean_data = [
@@ -63,7 +64,7 @@ class ClamavValidatorTest extends \PHPUnit_Framework_TestCase
         Facade::setFacadeApplication($application);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         chmod($this->error_data['file'], 0644);
         Mockery::close();
@@ -119,7 +120,7 @@ class ClamavValidatorTest extends \PHPUnit_Framework_TestCase
 
     public function testValidatesError()
     {
-        $this->setExpectedException(ClamavValidatorException::class, 'is not readable');
+        $this->expectException(ClamavValidatorException::class, 'is not readable');
 
         $validator = new ClamavValidator(
             $this->translator,
